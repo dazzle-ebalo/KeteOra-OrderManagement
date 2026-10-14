@@ -2,30 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>KeteOra Orders</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orders · KeteOra Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/js/common.js" defer></script>
+  <script src="/js/orders.js" defer></script>
 </head>
 <body>
-  <h1>KeteOra Orders <small>v1</small></h1>
-  <table border="1" cellpadding="6">
-    <thead><tr><th>Order</th><th>Customer</th><th>Total (NZD)</th><th>Status</th></tr></thead>
-    <tbody id="orders"></tbody>
-  </table>
-  <p>Served by <span id="server">unknown</span></p>
-  <script>
-    // textContent keeps order data from being run as HTML
-    fetch('/api/orders').then(r => r.json()).then(orders => {
-      for (const o of orders) {
-        const row = document.createElement('tr');
-        for (const value of ['#' + o.id, o.customer, o.total.toFixed(2), o.status]) {
-          const cell = document.createElement('td');
-          cell.textContent = value;
-          row.appendChild(cell);
-        }
-        document.getElementById('orders').appendChild(row);
-      }
-    });
-    fetch('/api/info').then(r => r.json())
-      .then(info => document.getElementById('server').textContent = info.server);
-  </script>
+  <aside class="sidebar">
+    <div class="store">
+      <span class="logo">K</span>
+      <div><strong>KeteOra</strong><small>Wellington</small></div>
+    </div>
+    <nav>
+      <a href="/">Orders</a>
+      <a href="/products.html">Products</a>
+      <a href="/customers.html">Customers</a>
+      <a href="/analytics.html">Analytics</a>
+    </nav>
+    <div class="release">Release <span class="version" id="release"></span></div>
+  </aside>
+
+  <div class="content">
+    <header class="page-header">
+      <div>
+        <div class="company">KeteOra · Order management</div>
+        <h1>Orders</h1>
+      </div>
+      <div class="header-right">
+        <input id="search" type="search" placeholder="Search by order number or customer">
+        <div class="user">
+          <span class="avatar" id="avatar"></span>
+          <div><strong id="user-name"></strong><small>Store admin</small></div>
+          <button class="logout" id="logout" type="button">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="summary">
+      <div><span>Orders</span><strong id="sum-orders">0</strong></div>
+      <div><span>Items ordered</span><strong id="sum-items">0</strong></div>
+      <div><span>Unfulfilled</span><strong id="sum-unfulfilled">0</strong></div>
+      <div><span>Paid revenue (NZD)</span><strong id="sum-revenue">$0.00</strong></div>
+    </section>
+
+    <section class="panel">
+      <div class="tabs">
+        <button class="tab current" type="button" data-filter="All">All</button>
+        <button class="tab" type="button" data-filter="Unfulfilled">Unfulfilled</button>
+        <button class="tab" type="button" data-filter="In transit">In transit</button>
+        <button class="tab" type="button" data-filter="Delivered">Delivered</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Order</th><th>Date</th><th>Customer</th><th>City</th><th class="num">Total</th><th>Payment</th><th>Fulfillment</th><th class="num">Items</th><th>Delivery method</th></tr>
+        </thead>
+        <tbody id="orders"><tr><td colspan="9" class="empty">Loading orders…</td></tr></tbody>
+      </table>
+    </section>
+
+    <footer>Served by <span id="server">unknown</span></footer>
+  </div>
 </body>
 </html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analytics · KeteOra Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/js/common.js" defer></script>
+  <script src="/js/analytics.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="store">
+      <span class="logo">K</span>
+      <div><strong>KeteOra</strong><small>Wellington</small></div>
+    </div>
+    <nav>
+      <a href="/">Orders</a>
+      <a href="/products.html">Products</a>
+      <a href="/customers.html">Customers</a>
+      <a href="/analytics.html">Analytics</a>
+    </nav>
+    <div class="release">Release <span class="version" id="release"></span></div>
+  </aside>
+
+  <div class="content">
+    <header class="page-header">
+      <div>
+        <div class="company">KeteOra · Order management</div>
+        <h1>Analytics</h1>
+      </div>
+      <div class="header-right">
+        <div class="user">
+          <span class="avatar" id="avatar"></span>
+          <div><strong id="user-name"></strong><small>Store admin</small></div>
+          <button class="logout" id="logout" type="button">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="summary">
+      <div><span>Orders</span><strong id="sum-orders">0</strong></div>
+      <div><span>Paid revenue (NZD)</span><strong id="sum-revenue">$0.00</strong></div>
+      <div><span>Average order value</span><strong id="sum-average">$0.00</strong></div>
+      <div><span>Items sold</span><strong id="sum-items">0</strong></div>
+    </section>
+
+    <div class="grid-2">
+      <section class="panel">
+        <h2>Orders by fulfillment status</h2>
+        <div class="bars" id="by-fulfillment"></div>
+      </section>
+      <section class="panel">
+        <h2>Paid revenue by region</h2>
+        <div class="bars" id="by-region"></div>
+      </section>
+    </div>
+
+    <section class="panel">
+      <h2>Top products by revenue</h2>
+      <table>
+        <thead><tr><th>Product</th><th class="num">Units</th><th class="num">Revenue</th></tr></thead>
+        <tbody id="top-products"></tbody>
+      </table>
+    </section>
+
+    <footer>Served by <span id="server">unknown</span></footer>
+  </div>
+</body>
+</html>

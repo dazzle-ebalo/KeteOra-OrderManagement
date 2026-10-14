@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · KeteOra Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/js/login.js" defer></script>
+</head>
+<body class="login-page">
+  <main class="login-card">
+    <div class="store">
+      <span class="logo">K</span>
+      <div><strong>KeteOra</strong><small>Order management</small></div>
+    </div>
+    <h1>Sign in</h1>
+    <p>Staff access only.</p>
+    <form id="login-form">
+      <label for="username">Username</label>
+      <input id="username" name="username" autocomplete="username" required>
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+      <button type="submit">Sign in</button>
+      <div class="message" id="message" role="alert"></div>
+    </form>
+  </main>
+</body>
+</html>
