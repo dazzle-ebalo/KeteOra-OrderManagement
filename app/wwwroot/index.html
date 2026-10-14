@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>KeteOra Orders</title>
+</head>
+<body>
+  <h1>KeteOra Orders <small>v1</small></h1>
+  <table border="1" cellpadding="6">
+    <thead><tr><th>Order</th><th>Customer</th><th>Total (NZD)</th><th>Status</th></tr></thead>
+    <tbody id="orders"></tbody>
+  </table>
+  <p>Served by <span id="server">unknown</span></p>
+  <script>
+    // textContent keeps order data from being run as HTML
+    fetch('/api/orders').then(r => r.json()).then(orders => {
+      for (const o of orders) {
+        const row = document.createElement('tr');
+        for (const value of ['#' + o.id, o.customer, o.total.toFixed(2), o.status]) {
+          const cell = document.createElement('td');
+          cell.textContent = value;
+          row.appendChild(cell);
+        }
+        document.getElementById('orders').appendChild(row);
+      }
+    });
+    fetch('/api/info').then(r => r.json())
+      .then(info => document.getElementById('server').textContent = info.server);
+  </script>
+</body>
+</html>
