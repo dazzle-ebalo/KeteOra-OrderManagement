@@ -4,6 +4,8 @@ metadata:
   name: keteora-orders
 spec:
   type: LoadBalancer
+  # Keep each browser on the same pod, so its sign-in cookie stays valid
+  sessionAffinity: ClientIP
   selector:
     app: keteora-orders
   ports:

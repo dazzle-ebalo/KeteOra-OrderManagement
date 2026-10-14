@@ -17,6 +17,15 @@ spec:
           image: keteoraacr.azurecr.io/keteoraorders
           ports:
             - containerPort: 8080
+          env:
+            # Admin login comes from the Kubernetes Secret "keteora-admin", never from the repo.
+            # optional: true lets the pods start before the secret exists (nobody can sign in until it does).
+            - name: Admin__Username
+              valueFrom:
+                secretKeyRef: { name: keteora-admin, key: username, optional: true }
+            - name: Admin__PasswordHash
+              valueFrom:
+                secretKeyRef: { name: keteora-admin, key: passwordHash, optional: true }
           resources:
             requests: { cpu: 100m, memory: 128Mi }
             limits:   { cpu: 500m, memory: 256Mi }
