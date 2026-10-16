@@ -21,8 +21,38 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
-
 stages:
+- stage: CodeScan
+  displayName: Code scan stage
+  jobs:
+  - job: Sonar
+    displayName: SonarQube analysis
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: UseDotNet@2
+      displayName: Install .NET 10 SDK
+      inputs:
+        version: '10.x'
+    - task: SonarQubePrepare@8
+      displayName: Prepare SonarQube analysis
+      inputs:
+        SonarQube: 'SonarQubeKeteora'
+        scannerMode: 'dotnet'
+        projectKey: 'keteora-orders'
+        projectName: 'KeteOra Orders'
+    - task: DotNetCoreCLI@2
+      displayName: Build the app for scanning
+      inputs:
+        command: 'build'
+        projects: 'app/KeteOra.Orders.csproj'
+    - task: SonarQubeAnalyze@8
+      displayName: Run SonarQube analysis
+    - task: SonarQubePublish@8
+      displayName: Publish quality gate result
+      inputs:
+        pollingTimeoutSec: '300'
+
 - stage: Build
   displayName: Build stage
   jobs:
@@ -76,4 +106,3 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
-
