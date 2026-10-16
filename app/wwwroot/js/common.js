@@ -1,7 +1,7 @@
 // Shared by every signed-in page: release label, signed-in user, logout and the active menu item
 
 // The release label shown in the sidebar. Change this to show a new version has been deployed.
-const RELEASE = 'v1';
+const RELEASE = 'v2';
 
 // Fetches JSON from the API; if the session has expired, goes back to the login page
 async function api(path) {
