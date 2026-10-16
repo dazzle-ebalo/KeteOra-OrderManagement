@@ -21,6 +21,9 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
+  # SonarQube server (the token is a secret pipeline variable, SONAR_TOKEN, never in this file)
+  sonarHostUrl: 'http://sonar-keteora-1714.australiaeast.azurecontainer.io:9000'
+
 stages:
 - stage: CodeScan
   displayName: Code scan stage
@@ -34,24 +37,14 @@ stages:
       displayName: Install .NET 10 SDK
       inputs:
         version: '10.x'
-    - task: SonarQubePrepare@8
-      displayName: Prepare SonarQube analysis
-      inputs:
-        SonarQube: 'SonarQubeKeteora'
-        scannerMode: 'dotnet'
-        projectKey: 'keteora-orders'
-        projectName: 'KeteOra Orders'
-    - task: DotNetCoreCLI@2
-      displayName: Build the app for scanning
-      inputs:
-        command: 'build'
-        projects: 'app/KeteOra.Orders.csproj'
-    - task: SonarQubeAnalyze@8
-      displayName: Run SonarQube analysis
-    - task: SonarQubePublish@8
-      displayName: Publish quality gate result
-      inputs:
-        pollingTimeoutSec: '300'
+    - script: |
+        set -e
+        dotnet tool install --global dotnet-sonarscanner
+        export PATH="$PATH:$HOME/.dotnet/tools"
+        dotnet sonarscanner begin /k:"keteora-orders" /n:"KeteOra Orders" /d:sonar.host.url="$(sonarHostUrl)" /d:sonar.token="$(SONAR_TOKEN)"
+        dotnet build app/KeteOra.Orders.csproj
+        dotnet sonarscanner end /d:sonar.token="$(SONAR_TOKEN)"
+      displayName: Run SonarQube analysis (SonarScanner for .NET)
 
 - stage: Build
   displayName: Build stage
